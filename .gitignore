@@ -1,0 +1,15 @@
+.DS_Store
+Thumbs.db
+node_modules/
+.vercel/
+.env
+.env.*
+*.log
+.idea/
+__pycache__/
+*.pyc
+.venv/
+venv/
+.pytest_cache/
+.firebase/
+!.env.example

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>BudgetBuddy AI | AI Expense Tracker</title>
+<meta name="description" content="Track daily expenses with budgets, charts and insights.">
+<meta name="theme-color" content="#0f766e">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="images/icon.svg" type="image/svg+xml">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=Instrument+Serif&family=Noto+Naskh+Arabic:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-pal="teal" data-mode="light">
+<div id="login" class="lg">
+  <div class="l"><div class="brand" style="color:#fff"><span class="logo" style="background:#fff"></span>BudgetBuddy AI</div><h1>Know where every rupee goes.</h1><p style="margin:0;opacity:.85">Simple expense tracking with budgets and clear insights.</p></div>
+  <div class="r"><h2 style="font-size:1.8rem">Welcome back</h2><p class="sub" style="margin:0 0 8px">Sign in to see your expenses.</p><button class="g" id="signin"><b></b>Continue with Google</button><p class="err" id="lerr" role="alert"></p><p class="sub" id="setup" hidden>Firebase isn't set up yet. Add your keys in firebase-config.js.</p></div>
+</div>
+
+<div id="app" class="shell" hidden>
+  <aside class="side">
+    <div class="brand"><span class="logo"></span>BudgetBuddy AI</div>
+    <nav aria-label="Main">
+      <button data-go="dash"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>Dashboard</button>
+      <button data-go="list"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>Expenses</button>
+    <button data-go="inc"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v14M6 11l6 6 6-6M4 21h16"/></svg>Income</button>
+      <button data-go="rec"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 2l4 4-4 4M3 11V9a3 3 0 013-3h15M7 22l-4-4 4-4M21 13v2a3 3 0 01-3 3H3"/></svg>Recurring</button>
+    <button data-go="spl"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6M16 4.8a3.5 3.5 0 010 6.4M18 14.4c2.2.7 3.5 2.6 3.5 5.6"/></svg>Split bills</button>
+    <button data-go="ai"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8zM19 16l.8 2.2L22 19l-2.2.8L19 22l-.8-2.2L16 19l2.2-.8z"/></svg>AI</button>
+    </nav>
+    <div class="me"><div class="av" id="uav">?</div><div><div id="uname">You</div><button class="ghost" id="out" style="padding:2px 10px;font-size:.8rem">Sign out</button></div></div>
+  </aside>
+  <main>
+    <header class="bar">
+      <div><h1 id="pt">Dashboard</h1><p class="sub" id="ps" style="margin:2px 0 0"></p></div>
+      <div class="acts">
+        <select id="per" aria-label="Period"></select><span class="chip w" id="off" hidden>Offline</span><div class="acts" style="gap:8px" role="group" aria-label="Color theme"><button class="dot" data-p="teal" aria-label="Teal" style="background:#0f766e"></button><button class="dot" data-p="indigo" aria-label="Indigo" style="background:#4f46e5"></button><button class="dot" data-p="emerald" aria-label="Emerald" style="background:#059669"></button><button class="dot" data-p="rose" aria-label="Rose" style="background:#be185d"></button></div>
+        <button class="ghost" id="mode">Dark</button>
+        <button class="ghost" id="lang">اردو</button><button class="ghost" id="rep">Report (PDF)</button><button class="btn" id="add">+ Add expense</button>
+      </div>
+    </header>
+    <div id="cr" class="acts" hidden style="margin:-12px 0 20px"><label>From<input type="date" id="pfrom"></label><label>To<input type="date" id="pto"></label></div>
+
+    <section data-t="dash">
+      <div class="kpis">
+        <div class="card"><span class="sub">Total spent</span><span class="num" id="tot">Rs 0</span></div>
+        <div class="card"><span class="sub">Total expenses</span><span class="num" id="cnt">0</span></div>
+        <div class="card"><span class="sub">Income</span><span class="num" id="inc">Rs 0</span></div>
+        <div class="card"><span class="sub">Balance</span><span class="num" id="bal">Rs 0</span></div>
+      </div>
+      <div class="g2">
+        <div class="card"><h2>Spending, last 6 months</h2><svg id="area" viewBox="0 0 560 200" width="100%" style="margin-top:8px" role="img" aria-label="Monthly spending chart"></svg></div>
+        <div class="card"><h2>By category</h2><div style="display:flex;gap:16px;align-items:center;flex-wrap:wrap;margin-top:10px"><svg id="dn" width="130" height="130" viewBox="0 0 130 130" style="transform:rotate(-90deg)"></svg><div class="leg" id="leg" style="flex:1;min-width:120px"></div></div></div>
+      </div>
+      <div class="g2">
+        <div class="card"><div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap"><div><h2>Monthly budget</h2><span class="sub" id="bm"></span></div><span class="chip" id="bs">On track</span></div>
+          <div class="bud"><i id="bf" style="width:0"></i></div><div class="sub" id="bt"></div><div class="sub" id="fcast" style="margin-top:6px"></div>
+          <label style="margin-top:14px;max-width:200px">Budget (Rs)<input id="budget" type="number" min="1" value="40000"></label>
+          <div class="top2" style="margin:20px 0 4px"><p style="font-weight:600;margin:0">Category limits</p><button class="ghost" type="button" id="mcat" style="padding:5px 12px;font-size:.85rem">Manage categories</button></div><div id="cb"></div></div>
+        <div class="card"><h2>Wallets</h2><div id="wl" style="margin-top:12px"></div></div>
+      </div>
+      <div class="card ins" style="margin-top:16px"><h2 style="margin-bottom:14px">Insights</h2><div id="ins"></div></div>
+      <div class="card" style="margin-top:16px"><div class="top2"><div><h2>AI monthly review</h2><p class="sub" style="margin:2px 0 0">A short review of this month written by Groq.</p></div><button class="btn" id="aisum">Generate review</button></div><div id="aisumout" style="white-space:pre-wrap"></div></div>
+      <div class="card" style="margin-top:16px"><div style="display:flex;justify-content:space-between;align-items:center"><h2>Recent expenses</h2><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="ghost" id="sample">Load sample data</button><button class="ghost" data-go="list">View all</button></div></div><div class="tw"><table><thead><tr><th>Title</th><th>Category</th><th>Wallet</th><th>Date</th><th class="n">Amount</th></tr></thead><tbody id="rec"></tbody></table></div><p class="sub" id="recempty" style="text-align:center;padding:16px 0 0">No expenses yet. Tap "+ Add expense" to start.</p></div>
+    </section>
+
+    <section data-t="list" class="off">
+      <div class="card" id="formcard" style="margin-bottom:16px">
+        <h2 id="dh" style="margin-bottom:14px">Add an expense</h2>
+        <form class="form" id="form" novalidate>
+          <label class="w">Expense title<input id="title" placeholder="Lunch at Burns Road" maxlength="80"></label>
+          <label>Amount (Rs)<input id="amount" type="number" min="1" placeholder="850"></label>
+          <label>Date<input id="date" type="date"></label>
+          <label>Category<select id="cat"></select></label>
+          <label>Wallet<select id="wal"></select></label>
+          <label class="w">Note (optional)<input id="note" maxlength="140" placeholder="Anything to remember"></label>
+          <label class="w">Tags (optional, comma separated)<input id="tags" placeholder="work, family"></label>
+          <button class="ghost" type="button" id="cx" hidden>Cancel</button><button class="btn" type="submit" id="sv">Add expense</button>
+        </form><p class="err" id="err" role="alert"></p><p class="sub" id="chint" style="margin:6px 0 0"></p>
+      </div>
+      <div class="card">
+        <div class="tools"><input id="q" type="search" placeholder="Search title, note or tag" aria-label="Search"><select id="fc" aria-label="Category"><option value="">All categories</option></select><select id="fw" aria-label="Wallet"></select><select id="so" aria-label="Sort"><option value="new">Newest first</option><option value="old">Oldest first</option><option value="hi">Highest amount</option><option value="lo">Lowest amount</option></select><button class="ghost" id="csv">Export CSV</button></div>
+        <div class="tw"><table><thead><tr><th>Title</th><th>Category</th><th>Wallet</th><th>Date</th><th class="n">Amount</th><th></th></tr></thead><tbody id="rows"></tbody></table></div>
+        <p class="sub" id="empty" hidden style="text-align:center;padding:20px 0 0">No expenses match. Add one or change your filters.</p>
+      </div>
+    </section>
+    <section data-t="inc" class="off"><div class="card"><div class="top2"><h2>Income</h2><button class="btn" id="addinc">+ Add income</button></div>
+      <div class="tw"><table><thead><tr><th>Source</th><th>Wallet</th><th>Date</th><th class="n">Amount</th><th></th></tr></thead><tbody id="irows"></tbody></table></div>
+      <p class="sub" id="iempty" style="text-align:center;padding:20px 0 0">No income in this period. Add salary, pocket money or any money you receive.</p></div></section>
+    <section data-t="rec" class="off"><div class="card"><div class="top2"><div><h2>Recurring expenses</h2><p class="sub" style="margin:2px 0 0">Added automatically on the chosen day each month when you open the app.</p></div><button class="btn" id="addrec">+ Add recurring</button></div>
+      <div class="tw"><table><thead><tr><th>Title</th><th>Category</th><th>Wallet</th><th>Repeats</th><th class="n">Amount</th><th></th></tr></thead><tbody id="rrows"></tbody></table></div>
+      <p class="sub" id="rempty" style="text-align:center;padding:20px 0 0">Nothing yet. Add rent, internet or any bill that repeats.</p></div></section>
+  <section data-t="spl" class="off"><div class="card"><div class="top2"><div><h2>Split bills</h2><p class="sub" style="margin:2px 0 0">Share a bill with friends and track who owes you.</p></div><button class="btn" id="addspl">+ Split a bill</button></div>
+      <div class="card" style="background:var(--soft);border:0;margin-bottom:12px"><span class="sub">Friends owe you</span><span class="num" id="owed">Rs 0</span></div>
+      <div id="sl" style="display:grid;gap:12px"></div>
+      <p class="sub" id="sempty" style="text-align:center;padding:20px 0 0">No split bills yet. Split a restaurant bill or trip cost with friends.</p></div></section>
+  <section data-t="ai" class="off" style="display:grid;gap:16px">
+      <div class="card"><h2>AI connection</h2>
+        <p class="sub" style="margin:4px 0 14px">AI requests go through the BudgetBuddy server, so you do not need your own key. Only a summary of what you ask is sent to Groq.</p>
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><button class="ghost" id="gcheck">Check connection</button><span class="sub" id="gstat"></span></div></div>
+      <div class="card"><h2>Quick add with AI</h2>
+        <p class="sub" style="margin:4px 0 14px">Type an expense in plain words, paste a bank, JazzCash or Easypaisa SMS, or speak. AI fills the form and you confirm.</p>
+        <div style="display:flex;gap:10px;flex-wrap:wrap"><textarea id="aiq" rows="2" style="flex:1;min-width:220px" placeholder="Lunch 850 at Burns Road yesterday, paid by JazzCash"></textarea><button class="ghost" id="mic" type="button">Speak</button><button class="btn" id="aiadd">Fill the form</button></div>
+        <p class="err" id="aiqmsg" role="alert"></p></div>
+      <div class="card"><h2>Ask about your spending</h2>
+        <p class="sub" style="margin:4px 0 14px">Asking sends a summary of your expenses to Groq to answer.</p>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px"><button class="ghost" data-q="Where did I spend the most this month?">Top spending</button><button class="ghost" data-q="Give me 3 practical tips to save money based on my spending.">Saving tips</button><button class="ghost" data-q="Compare this month with last month.">Compare months</button></div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap"><input id="aq" style="flex:1;min-width:220px" placeholder="How much did I spend on food this month?"><button class="btn" id="aask">Ask</button></div>
+        <div id="aa" style="white-space:pre-wrap;margin-top:14px"></div></div>
+    </section>
+  </main>
+</div>
+
+<dialog id="dinc"><h2>Add income</h2>
+  <form class="form" id="iform" novalidate>
+    <label class="w">Source<input id="ititle" placeholder="Salary, pocket money..." maxlength="80"></label>
+    <label>Amount (Rs)<input id="iamount" type="number" min="1" placeholder="50000"></label>
+    <label>Date<input id="idate" type="date"></label>
+    <label class="w">Wallet<select id="iwal"></select></label>
+    <button class="ghost" type="button" id="icx">Cancel</button><button class="btn" type="submit">Add income</button>
+  </form><p class="err" id="ierr" role="alert"></p></dialog>
+<dialog id="drec"><h2>Add recurring expense</h2>
+  <form class="form" id="rform" novalidate>
+    <label class="w">Title<input id="rtitle" placeholder="Rent, internet..." maxlength="80"></label>
+    <label>Amount (Rs)<input id="ramount" type="number" min="1" placeholder="12000"></label>
+    <label>Day of month (1-28)<input id="rday" type="number" min="1" max="28" placeholder="5"></label>
+    <label>Category<select id="rcat"></select></label>
+    <label>Wallet<select id="rwal"></select></label>
+    <button class="ghost" type="button" id="rcx">Cancel</button><button class="btn" type="submit">Add recurring</button>
+  </form><p class="err" id="rerr" role="alert"></p></dialog>
+<dialog id="dcat"><h2>Categories</h2>
+  <p class="sub" style="margin:4px 0 0">Your own categories can be added here. Built-in ones can't be deleted.</p>
+  <form class="form" id="cform" novalidate>
+    <label class="w">Category name<input id="cname" maxlength="24" placeholder="Groceries, Gym, Pets..." autocomplete="off"></label>
+    <div class="w"><span class="sub" style="font-weight:500;font-size:.82rem">Colour</span><div class="sw" id="csw"></div></div>
+    <button class="ghost" type="button" id="ccx">Close</button><button class="btn" type="submit">Add category</button>
+  </form><p class="err" id="cerr" role="alert"></p>
+  <div id="clist" style="max-height:240px;overflow:auto;margin-top:8px"></div></dialog>
+<div id="toast" role="status"><span id="tt"></span><button id="tb" hidden>Undo</button></div>
+
+<dialog id="dspl"><h2>Split a bill</h2>
+  <form class="form" id="sform" novalidate>
+    <label class="w">Title<input id="stitle" maxlength="80" placeholder="Dinner at Do Darya"></label>
+    <label>Total amount (Rs)<input id="stotal" type="number" min="1" placeholder="6000"></label>
+    <label>Date<input id="sdate" type="date"></label>
+    <label>Category<select id="scat"></select></label>
+    <label>Wallet<select id="swal"></select></label>
+    <label class="w">Friends (comma separated names)<input id="sfriends" placeholder="Ali, Sara"></label>
+    <p class="sub w" style="margin:0">The bill is split equally between you and your friends. Your share is saved as your expense.</p>
+    <button class="ghost" type="button" id="scx">Cancel</button><button class="btn" type="submit">Save split</button>
+  </form><p class="err" id="serr" role="alert"></p></dialog>
+<div id="report"></div>
+<script type="module" src="app.js"></script>
+</body>
+</html>
