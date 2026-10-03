@@ -17,7 +17,8 @@
 ![PWA](https://img.shields.io/badge/PWA-5A0FC8?style=for-the-badge&logo=pwa&logoColor=white)
 ![License](https://img.shields.io/badge/license-MIT-f59e0b?style=for-the-badge)
 
-[**Live Demo (Firebase)**](https://YOUR_PROJECT_ID.web.app) &nbsp;|&nbsp; [**Live Demo (Vercel)**](https://YOUR_APP.vercel.app) &nbsp;|&nbsp; [**Report a Bug**](https://github.com/YOUR_USERNAME/budgetbuddy-ai/issues)
+[**Live Demo (Firebase)**](https://budgetbuddy-ai-23447.web.app)
+<img width="329" height="41" alt="image" src="https://github.com/user-attachments/assets/0fa7cfcf-db92-4f8e-88b4-e4a57271d7ff" /> &nbsp;|&nbsp; [**Live Demo (Vercel)**](https://budgetbuddy-ai-xi.vercel.app) &nbsp;|&nbsp; [**Report a Bug**](https://github.com/scientistayat-engineerBudgetBuddy-AI/issues)
 
 </div>
 
