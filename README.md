@@ -63,15 +63,25 @@ Design goals:
 
 ## Screenshots
 
-<!-- Add your screenshots to frontend/images/screenshots/ using these file names -->
-
 | Dashboard | Expenses |
 | :---: | :---: |
 | ![Dashboard](frontend/images/screenshots/dashboard.png) | ![Expenses](frontend/images/screenshots/expenses.png) |
 
+| Create your own category | Category limits |
+| :---: | :---: |
+| ![Custom categories](frontend/images/screenshots/custom-categories.png) | ![Category limits](frontend/images/screenshots/category-limits.png) |
+
 | AI Assistant | Urdu (RTL) |
 | :---: | :---: |
 | ![AI](frontend/images/screenshots/ai.png) | ![Urdu](frontend/images/screenshots/urdu.png) |
+
+| Dark mode | Recurring bills |
+| :---: | :---: |
+| ![Dark mode](frontend/images/screenshots/dark.png) | ![Recurring](frontend/images/screenshots/recurring.png) |
+
+| Split bills | Sign in |
+| :---: | :---: |
+| ![Split bills](frontend/images/screenshots/split-bills.png) | ![Sign in](frontend/images/screenshots/login.png) |
 
 ## Features
 
